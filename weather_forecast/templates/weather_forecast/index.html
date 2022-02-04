@@ -3,4 +3,7 @@
 {% block title %}Forecast{% endblock %}
 {% block content %}
     <h1>Приложение прогноза погоды!</h1>
+    <form action="{% url 'forecast_by_location' %}" method="get">
+        <input name="q" type="text" placeholder="Search...">
+    </form>
 {% endblock %}
