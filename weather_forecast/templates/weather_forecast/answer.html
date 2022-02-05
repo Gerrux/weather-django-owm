@@ -3,4 +3,14 @@
 {% block title %}{{ location|title }}{% endblock %}
 {% block content %}
     <h2>Ответ приложения прогноза погоды</h2>
+    <h2>День: {{ weather_forecast.current_weather.day_of_week|title }} ({{ weather_forecast.current_weather.date }})</h2>
+    <h2>Локация: {{ weather_forecast.current_weather.location|title }} (корд. {{ weather_forecast.current_weather.latitude }}°, {{ weather_forecast.current_weather.longitude }}°)</h2>
+    <h2>Температура: {{ weather_forecast.current_weather.temp }}</h2>
+    <h2>Статус: {{ weather_forecast.current_weather.detailed_status }}</h2>
+    <h2>Скорость ветра: {{ weather_forecast.current_weather.speed_wind }}</h2>
+    <h2>Направление ветра: {{ weather_forecast.current_weather.direction_wind|title }}</h2>
+    <h2>Влажность: {{ weather_forecast.current_weather.humidity }}%</h2>
+    <h2>Атмос. давление: {{ weather_forecast.current_weather.pressure }} рт. ст.</h2>
+
+    {{ weather_forecast }}
 {% endblock %}

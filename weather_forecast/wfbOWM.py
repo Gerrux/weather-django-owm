@@ -4,7 +4,7 @@ import datetime
 import requests
 import json
 
-API_KEY_OWM = 'YOUR_OWM_TOKEN'
+API_KEY_OWM = '0156c6bdea552ac5f63266f2e501af01'
 
 config_dict = get_default_config()
 config_dict['language'] = 'ru'
@@ -60,7 +60,7 @@ def get_information_about_weather_forecast(place="Москва"):
 
     day_of_week = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресение']  # 8
 
-    date = str(datetime.date.today()).replace('-', '.')  # 9
+    date = str(datetime.date.today().strftime('%d.%m.%Y')) # 9
 
     answer = {
         "current_weather": {
@@ -100,12 +100,14 @@ def forecast_weather(place="Москва"):
     forecast_weather_answer = {
         "temp": [],
         "data-icon": [],
+        "detailed_status": [],
         "daily-name": [],
     }
     daily_name = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
-    for i in range(1, 5):
+    for i in range(1, 8):
         forecast_weather_answer['temp'].append(round(forecast['daily'][i]['temp']['day'], 1))
         forecast_weather_answer['data-icon'].append(f"{forecast['daily'][i]['weather'][0]['icon']}.png")
-        forecast_weather_answer['daily-name'].append(daily_name[datetime.datetime.today().isoweekday() - 1 + i])
+        forecast_weather_answer['detailed_status'].append(forecast['daily'][i]['weather'][0]['description'])
+        forecast_weather_answer['daily-name'].append(daily_name[(datetime.datetime.today().isoweekday() - 1 + i) % 7])
     # print(forecast['daily'][1]['temp']['day'])
     return forecast_weather_answer
