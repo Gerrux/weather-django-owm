@@ -14,7 +14,6 @@ def get_weather_forecast_by_location(request, location):
     context = {
         'location': location,
         'weather_forecast': wf(location),
-        'range_forecast': range(7)
     }
     return render(request, 'weather_forecast/answer.html', context=context)
 

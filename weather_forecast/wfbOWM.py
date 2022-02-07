@@ -101,7 +101,6 @@ def forecast_weather(place="Москва"):
     }
     daily_name = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
     for i in range(1, 8):
-        print(forecast['daily'][i])
         forecast_weather_answer[i] = {
             'temp': round(forecast['daily'][i]['temp']['day'], 1),
             'speed_wind': str(round(forecast['daily'][i]['wind_speed'], 1)),
