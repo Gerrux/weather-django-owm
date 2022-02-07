@@ -1,13 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block css_additional %}
+    <link rel="stylesheet" href="{% static 'css/answer.css' %}">
     <link href='https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css' rel='stylesheet'>
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css' rel='stylesheet'>
     <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js'></script>
     <script type='text/javascript' src='https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js'></script>
+    <style>
+    body {
+        background: url("{% static 'img/pattern.svg' %}"), repeat;
+    }
+    </style>
 {% endblock %}
 {% block title %}{{ location|title }}{% endblock %}
 {% block content %}
+    <div class="container">
+    <form action="{% url "forecast_request" %}" method="get">
+        <input class="form-control" type="text" placeholder="Search..." name="location">
+    </form>
     <h2>Ответ приложения прогноза погоды</h2>
     <h2>День: {{ weather_forecast.current_weather.day_of_week|title }} ({{ weather_forecast.current_weather.date }})</h2>
     <h2>Локация: {{ weather_forecast.current_weather.location|title }} (корд. {{ weather_forecast.current_weather.latitude }}°, {{ weather_forecast.current_weather.longitude }}°)</h2>
@@ -38,8 +48,6 @@
           {% endfor %}
       </div>
     </div>
+</div>
 
-    <form action="{% url "forecast_request" %}" method="get">
-        <input type="text" placeholder="Search..." name="location">
-    </form>
 {% endblock %}
