@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
-{% block css_additional %}{% endblock %}
+{% load static %}
+{% block css_additional %}
+    <link href='https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css' rel='stylesheet'>
+    <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js'></script>
+    <script type='text/javascript' src='https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js'></script>
+{% endblock %}
 {% block title %}{{ location|title }}{% endblock %}
 {% block content %}
     <h2>Ответ приложения прогноза погоды</h2>
@@ -12,5 +18,24 @@
     <h2>Влажность: {{ weather_forecast.current_weather.humidity }}%</h2>
     <h2>Атмос. давление: {{ weather_forecast.current_weather.pressure }} рт. ст.</h2>
 
-    {{ weather_forecast }}
+    <div class="container">
+      <div class="row row-cols-3">
+          {% for day, info_about_day in weather_forecast.weather_forecast.items %}
+            <div class="col">
+                    <div class="card">
+                        <img class="img-fluid" alt="100%x280" src="{% static info_about_day.data_icon %}">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ info_about_day.daily_name }} ({{ info_about_day.daily_date }})</h4>
+                            <p class="card-text">{{ info_about_day.detailed_status|capfirst }}</p>
+                            <p class="card-text">Температура: {{ info_about_day.temp }}°C</p>
+                        </div>
+                    </div>
+            </div>
+          {% endfor %}
+      </div>
+    </div>
+
+    <form action="{% url "forecast_request" %}" method="get">
+        <input type="text" placeholder="Search..." name="location">
+    </form>
 {% endblock %}

@@ -98,16 +98,15 @@ def forecast_weather(place="Москва"):
         f"https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=hourly,current,minutely,alerts&appid={API_KEY_OWM}&lang=ru&units=metric")
     forecast = json.loads(request.content)
     forecast_weather_answer = {
-        "temp": [],
-        "data-icon": [],
-        "detailed_status": [],
-        "daily-name": [],
     }
     daily_name = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
     for i in range(1, 8):
-        forecast_weather_answer['temp'].append(round(forecast['daily'][i]['temp']['day'], 1))
-        forecast_weather_answer['data-icon'].append(f"{forecast['daily'][i]['weather'][0]['icon']}.png")
-        forecast_weather_answer['detailed_status'].append(forecast['daily'][i]['weather'][0]['description'])
-        forecast_weather_answer['daily-name'].append(daily_name[(datetime.datetime.today().isoweekday() - 1 + i) % 7])
+        forecast_weather_answer[i] = {
+            'temp': round(forecast['daily'][i]['temp']['day'], 1),
+            'data_icon': f"img/{forecast['daily'][i]['weather'][0]['icon']}.png",
+            'detailed_status': forecast['daily'][i]['weather'][0]['description'],
+            'daily_name': daily_name[(datetime.datetime.today().isoweekday() - 1 + i) % 7],
+            'daily_date': (datetime.datetime.today() + datetime.timedelta(days=i+1)).strftime("%Y-%m-%d")
+        }
     # print(forecast['daily'][1]['temp']['day'])
     return forecast_weather_answer
