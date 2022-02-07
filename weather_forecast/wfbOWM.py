@@ -14,7 +14,7 @@ mgr = owm.weather_manager()
 
 def wind_direction(wind):
     direction = ''
-    deg = float(wind['deg'])
+    deg = float(wind)
     if 0 <= deg < 22.5 or 337.5 < deg <= 360:
         direction = 'север'
     elif 22.5 < deg < 67.5:
@@ -46,7 +46,7 @@ def get_information_about_weather_forecast(place="Москва"):
     wind = w.wind()  # {'speed': 4.6, 'deg': 330}
     speed_wind = str(round(wind['speed'], 1))  # 2
 
-    direction = wind_direction(wind)  # 3
+    direction = wind_direction(wind['deg'])  # 3
 
     humidity = str(w.humidity)  # 4
 
@@ -101,10 +101,15 @@ def forecast_weather(place="Москва"):
     }
     daily_name = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
     for i in range(1, 8):
+        print(forecast['daily'][i])
         forecast_weather_answer[i] = {
             'temp': round(forecast['daily'][i]['temp']['day'], 1),
-            'data_icon': f"img/{forecast['daily'][i]['weather'][0]['icon']}.png",
+            'speed_wind': str(round(forecast['daily'][i]['wind_speed'], 1)),
+            'direction_wind': wind_direction(forecast['daily'][i]['wind_deg']),
+            'humidity': forecast['daily'][i]['humidity'],
             'detailed_status': forecast['daily'][i]['weather'][0]['description'],
+            'pressure': forecast['daily'][i]['pressure'],
+            'data_icon': f"img/{forecast['daily'][i]['weather'][0]['icon']}.png",
             'daily_name': daily_name[(datetime.datetime.today().isoweekday() - 1 + i) % 7],
             'daily_date': (datetime.datetime.today() + datetime.timedelta(days=i+1)).strftime("%Y-%m-%d")
         }

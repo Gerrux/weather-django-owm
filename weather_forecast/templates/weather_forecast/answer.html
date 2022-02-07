@@ -18,7 +18,7 @@
     <h2>Влажность: {{ weather_forecast.current_weather.humidity }}%</h2>
     <h2>Атмос. давление: {{ weather_forecast.current_weather.pressure }} рт. ст.</h2>
 
-    <div class="container">
+    <div class="container-fluid">
       <div class="row row-cols-3">
           {% for day, info_about_day in weather_forecast.weather_forecast.items %}
             <div class="col">
@@ -28,6 +28,10 @@
                             <h4 class="card-title">{{ info_about_day.daily_name }} ({{ info_about_day.daily_date }})</h4>
                             <p class="card-text">{{ info_about_day.detailed_status|capfirst }}</p>
                             <p class="card-text">Температура: {{ info_about_day.temp }}°C</p>
+                            <p class="card-text">Скорость ветра: {{ info_about_day.speed_wind }}</p>
+                            <p class="card-text">Направление ветра: {{ info_about_day.direction_wind|title }}</p>
+                            <p class="card-text">Влажность: {{ info_about_day.humidity }}%</p>
+                            <p class="card-text">Атмос. давление: {{ info_about_day.pressure }} рт. ст.</p>
                         </div>
                     </div>
             </div>
