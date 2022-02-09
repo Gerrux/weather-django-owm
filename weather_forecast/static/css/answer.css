@@ -1,5 +1,5 @@
 .container {
     background-color: #f5f5f5;
-    box-shadow: 5px 5px whitesmoke;
+    border: solid 5px aqua;
     border-radius: 15px;
 }
