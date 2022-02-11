@@ -56,7 +56,7 @@ def get_information_about_weather_forecast(place="Москва"):
 
     pressure = str(round(float(w.pressure['press']) * 0.750064))  # 6
 
-    icon_name = f'{w.weather_icon_name}.png'  # 7
+    icon_name = f'img/{w.weather_icon_name}.png'  # 7
 
     day_of_week = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресение']  # 8
 
@@ -80,13 +80,6 @@ def get_information_about_weather_forecast(place="Москва"):
         "weather_forecast": forecast_weather(place)
     }
 
-    # answer = 'На данный момент в городе ' + place.title() + ':'
-    # answer += 'Температура воздуха: ' + str(temp['temp']) + ' °C'
-    # answer += 'Статус: ' + detailed_status
-    # answer += 'Скорость ветра: ' + str(wind['speed']) + ' км/ч'
-    # answer += 'Направление ветра: ' + direction
-    # answer += 'Давление: ' + str(pressure['press']) + ' мбар'
-    # answer += 'Влажность: ' + str(humidity) + ' %'
     return answer
 
 
@@ -94,9 +87,11 @@ def forecast_weather(place="Москва"):
     observation = mgr.weather_at_place(place)
     lat = round(observation.location.lat, 2)
     lon = round(observation.location.lon, 2)
-    request = requests.get(
-        f"https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=hourly,current,minutely,alerts&appid={API_KEY_OWM}&lang=ru&units=metric")
+    url = f"https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=hourly,current,minutely,alerts&appid={API_KEY_OWM}&lang=ru&units=metric"
+    print(url)
+    request = requests.get(url)
     forecast = json.loads(request.content)
+
     forecast_weather_answer = {
     }
     daily_name = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
@@ -112,5 +107,5 @@ def forecast_weather(place="Москва"):
             'daily_name': daily_name[(datetime.datetime.today().isoweekday() - 1 + i) % 7],
             'daily_date': (datetime.datetime.today() + datetime.timedelta(days=i+1)).strftime("%Y-%m-%d")
         }
-    # print(forecast['daily'][1]['temp']['day'])
+
     return forecast_weather_answer

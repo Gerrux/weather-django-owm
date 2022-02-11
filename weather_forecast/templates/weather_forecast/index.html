@@ -1,15 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block css_additional %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
-    <style>
-        input[type="submit"] {
-            width: 35px; /* Ширина кнопки */
-            height: 20px; /* Высота кнопки */
-            border: none; /* Убираем рамку */
-            background: url("{% static 'img/send.png' %}") no-repeat 50% 50%; /* Параметры фона */
-        }
-    </style>
 {% endblock %}
 {% block title %}Forecast{% endblock %}
 {% block content %}

@@ -1,53 +1,103 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block css_additional %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/answer.css' %}">
-    <link href='https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css' rel='stylesheet'>
-    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css' rel='stylesheet'>
-    <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js'></script>
-    <script type='text/javascript' src='https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js'></script>
-    <style>
-    body {
-        background: url("{% static 'img/pattern.svg' %}"), repeat;
-    }
-    </style>
 {% endblock %}
 {% block title %}{{ location|title }}{% endblock %}
 {% block content %}
     <div class="container">
-    <form action="{% url "forecast_request" %}" method="get">
-        <input class="form-control" type="text" placeholder="Search..." name="location">
-    </form>
-    <h2>Ответ приложения прогноза погоды</h2>
-    <h2>День: {{ weather_forecast.current_weather.day_of_week|title }} ({{ weather_forecast.current_weather.date }})</h2>
-    <h2>Локация: {{ weather_forecast.current_weather.location|title }} (корд. {{ weather_forecast.current_weather.latitude }}°, {{ weather_forecast.current_weather.longitude }}°)</h2>
-    <h2>Температура: {{ weather_forecast.current_weather.temp }}</h2>
-    <h2>Статус: {{ weather_forecast.current_weather.detailed_status }}</h2>
-    <h2>Скорость ветра: {{ weather_forecast.current_weather.speed_wind }}</h2>
-    <h2>Направление ветра: {{ weather_forecast.current_weather.direction_wind|title }}</h2>
-    <h2>Влажность: {{ weather_forecast.current_weather.humidity }}%</h2>
-    <h2>Атмос. давление: {{ weather_forecast.current_weather.pressure }} рт. ст.</h2>
-
-    <div class="container-fluid">
-      <div class="row row-cols-3">
-          {% for day, info_about_day in weather_forecast.weather_forecast.items %}
-            <div class="col">
-                    <div class="card">
-                        <img class="img-fluid" alt="100%x280" src="{% static info_about_day.data_icon %}">
-                        <div class="card-body">
-                            <h4 class="card-title">{{ info_about_day.daily_name }} ({{ info_about_day.daily_date }})</h4>
-                            <p class="card-text">{{ info_about_day.detailed_status|capfirst }}</p>
-                            <p class="card-text">Температура: {{ info_about_day.temp }}°C</p>
-                            <p class="card-text">Скорость ветра: {{ info_about_day.speed_wind }}</p>
-                            <p class="card-text">Направление ветра: {{ info_about_day.direction_wind|title }}</p>
-                            <p class="card-text">Влажность: {{ info_about_day.humidity }}%</p>
-                            <p class="card-text">Атмос. давление: {{ info_about_day.pressure }} рт. ст.</p>
+        <form class="forecast-form" action="{% url "forecast_request" %}" method="get">
+            <input type="text" placeholder="Search..." name="location">
+            <span class="button-submit">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path
+                  d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+              </svg>
+            </span>
+        </form>
+        <script>
+        let form = document.querySelector('.forecast-form');
+        let button_submit = document.querySelector('.button-submit');
+        button_submit.addEventListener("click", function(){
+            form.submit();
+        });
+        </script>
+        <div class="current-weather-container">
+            <div class="description-weather-container">
+                <h3>{{ weather_forecast.current_weather.day_of_week|title }} ({{ weather_forecast.current_weather.date }})</h3>
+                <div class="description-weather">
+                    <div class="name-description">Температура:</div>
+                    <div class="answer-description"><b>{{ weather_forecast.current_weather.temp }}</b></div>
+                </div>
+                <div class="description-weather">
+                    <div class="name-description">Локация:</div>
+                    <div class="answer-description">{{ weather_forecast.current_weather.location|title }}</div>
+                </div>
+                <div class="description-weather">
+                    <div class="name-description">Координаты:</div>
+                    <div class="answer-description">{{ weather_forecast.current_weather.latitude }}°, {{ weather_forecast.current_weather.longitude }}°</div>
+                </div>
+                <div class="description-weather">
+                    <div class="name-description">Статус:</div>
+                    <div class="answer-description">{{ weather_forecast.current_weather.detailed_status }}</div>
+                </div>
+                <div class="description-weather">
+                    <div class="name-description">Скорость ветра:</div>
+                    <div class="answer-description">{{ weather_forecast.current_weather.speed_wind }} км/ч</div>
+                </div>
+                <div class="description-weather">
+                    <div class="name-description">Направление ветра:</div>
+                    <div class="answer-description">{{ weather_forecast.current_weather.direction_wind|title }}</div>
+                </div>
+                <div class="description-weather">
+                    <div class="name-description">Влажность:</div>
+                    <div class="answer-description">{{ weather_forecast.current_weather.humidity }}%</div>
+                </div>
+                <div class="description-weather">
+                    <div class="name-description">Атмос. давление:</div>
+                    <div class="answer-description">{{ weather_forecast.current_weather.pressure }} рт. ст.</div>
+                </div>
+            </div>
+            <div class="current-weather-icon">
+                <img src="{% static weather_forecast.current_weather.icon_name %}" alt="icon weather">
+            </div>
+        </div>
+        <h2>Прогноз погоды на неделю</h2>
+        <div class="container-fluid">
+              {% for day, info_about_day in weather_forecast.weather_forecast.items %}
+                <div class="card">
+                    <img class="img-fluid" alt="100%x280" src="{% static info_about_day.data_icon %}">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ info_about_day.daily_name }} ({{ info_about_day.daily_date }})</h4>
+                        <div class="description-weather">
+                            <div class="name-description">Температура:</div>
+                            <div class="answer-description">{{ info_about_day.temp }}°C</div>
+                        </div>
+                        <div class="description-weather">
+                            <div class="name-description">Статус:</div>
+                            <div class="answer-description">{{ info_about_day.detailed_status|capfirst }}</div>
+                        </div>
+                        <div class="description-weather">
+                            <div class="name-description">Скорость ветра:</div>
+                            <div class="answer-description">{{ info_about_day.speed_wind }}</div>
+                        </div>
+                        <div class="description-weather">
+                            <div class="name-description">Направление ветра:</div>
+                            <div class="answer-description">{{ info_about_day.direction_wind|title }}</div>
+                        </div>
+                        <div class="description-weather">
+                            <div class="name-description">Влажность:</div>
+                            <div class="answer-description">{{ info_about_day.humidity }}%</div>
+                        </div>
+                        <div class="description-weather">
+                            <div class="name-description">Атмос. давление:</div>
+                            <div class="answer-description">{{ info_about_day.pressure }} рт. ст.</div>
                         </div>
                     </div>
-            </div>
-          {% endfor %}
-      </div>
+                </div>
+              {% endfor %}
+        </div>
     </div>
-</div>
 
 {% endblock %}
