@@ -20,7 +20,7 @@ def get_weather_forecast_by_location(request, location):
 
 def get_redirect_by_result(request):
     location = request.GET.get("location")
-    return HttpResponseRedirect(f"/forecast/{location}")
+    return HttpResponseRedirect(f"/{location}")
 
 
 def get_weather_forecast_by_coordinates(request, latitude: float, longitude: float):
