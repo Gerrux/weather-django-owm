@@ -12,7 +12,8 @@ owm = pyowm.OWM(API_KEY_OWM, config_dict)
 mgr = owm.weather_manager()
 
 
-def wind_direction(wind):
+def wind_direction(wind: float):
+    """Функция вычисляет сторону света для направления ветра"""
     direction = ''
     deg = float(wind)
     if 0 <= deg < 22.5 or 337.5 < deg <= 360:
@@ -34,8 +35,15 @@ def wind_direction(wind):
     return direction
 
 
-def get_information_about_weather_forecast(place="Москва"):
-    # pyowm
+def get_information_about_weather_forecast(place="Москва") -> dict:
+    """
+    Функция выполняет API запрос на OpenWeatherMap и собирает словарь с данными.
+
+    :param place: An string
+
+    :rtype: dict
+    :return: answer
+    """
     observation = mgr.weather_at_place(place)
     lat = round(observation.location.lat, 4)
     lon = round(observation.location.lon, 4)
@@ -83,7 +91,14 @@ def get_information_about_weather_forecast(place="Москва"):
     return answer
 
 
-def forecast_weather(place="Москва"):
+def forecast_weather(place="Москва") -> dict:
+    """
+    Функция выполняет API запрос на OpenWeatherMap и собирает словарь
+    с данными прогноза погоды на ближающую неделю.
+
+    :param place: An string
+    :return: forecast_weather_answer an dict
+    """
     observation = mgr.weather_at_place(place)
     lat = round(observation.location.lat, 2)
     lon = round(observation.location.lon, 2)
